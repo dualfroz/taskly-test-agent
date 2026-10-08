@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, it, vi } from 'vitest'
 import { TodoFilters } from './TodoFilters'
@@ -27,4 +27,25 @@ it('displays controlled values and forwards all filter changes', async () => {
   expect(screen.getByLabelText('Search tasks')).toHaveValue('demo')
   expect(screen.getByLabelText('Status')).toHaveValue('completed')
   expect(screen.getByLabelText('Sort by')).toHaveValue('due')
+})
+
+it('renders children inside the filters section', () => {
+  render(
+    <TodoFilters
+      filter="all"
+      search=""
+      sort="newest"
+      onFilterChange={vi.fn()}
+      onSearchChange={vi.fn()}
+      onSortChange={vi.fn()}
+    >
+      <button>Extra action</button>
+    </TodoFilters>,
+  )
+  expect(
+    within(screen.getByRole('region', { name: 'Task filters' })).getByRole(
+      'button',
+      { name: 'Extra action' },
+    ),
+  ).toBeInTheDocument()
 })

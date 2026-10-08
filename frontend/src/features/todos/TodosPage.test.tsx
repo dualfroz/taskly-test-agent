@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import type { ReactNode } from 'react'
 import { beforeEach, expect, it, vi } from 'vitest'
 import { todoFixture } from '../../test/todoFixture'
 import type { Todo } from './types'
@@ -34,7 +35,28 @@ vi.mock('./components/TodosHeader', () => ({
     </>
   ),
 }))
-vi.mock('./components/TodoFilters', () => ({ TodoFilters: () => null }))
+vi.mock('./components/TodoFilters', () => ({
+  TodoFilters: ({ children }: { children?: ReactNode }) => <>{children}</>,
+}))
+vi.mock('./components/ClearCompletedButton', () => ({
+  ClearCompletedButton: ({
+    count,
+    busy,
+    onCleared,
+  }: {
+    count: number
+    busy: boolean
+    onCleared: (deleted: number) => void
+  }) => (
+    <div>
+      <p>
+        Completed {count} busy {String(busy)}
+      </p>
+      <button onClick={() => onCleared(1)}>Cleared one</button>
+      <button onClick={() => onCleared(4)}>Cleared four</button>
+    </div>
+  ),
+}))
 vi.mock('./components/TodoList', () => ({
   TodoList: ({
     todos,
@@ -264,6 +286,24 @@ it('opens the delete confirmation and can dismiss it silently', async () => {
   await user.click(screen.getByRole('button', { name: 'Close delete' }))
   expect(screen.queryByText('Deleting Prepare a demo')).not.toBeInTheDocument()
   expect(notify).not.toHaveBeenCalled()
+})
+
+it('passes the completed count to the clear button and announces the result', async () => {
+  const user = userEvent.setup()
+  const done = { ...todoFixture, id: 8, completed: true }
+  const { notify } = arrange({ todos: [todoFixture, done] })
+  render(<TodosPage />)
+  expect(screen.getByText('Completed 1 busy false')).toBeVisible()
+  await user.click(screen.getByRole('button', { name: 'Cleared four' }))
+  expect(notify).toHaveBeenCalledWith('Removed 4 completed tasks.')
+  await user.click(screen.getByRole('button', { name: 'Cleared one' }))
+  expect(notify).toHaveBeenCalledWith('Removed 1 completed task.')
+})
+
+it('marks the clear button busy while another operation runs', () => {
+  arrange({ busy: true })
+  render(<TodosPage />)
+  expect(screen.getByText('Completed 0 busy true')).toBeVisible()
 })
 
 it('closes the delete dialog and announces the deletion', async () => {
