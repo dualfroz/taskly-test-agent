@@ -3,7 +3,7 @@
   "description": "Final structured report of the unit-test-agent. One entry per changed or targeted source file, findings about suspected product bugs, and the commands the agent ran.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["mode", "summary", "testsPassing", "files", "findings", "commands"],
+  "required": ["mode", "summary", "testsPassing", "files", "skillsUsed", "findings", "commands"],
   "properties": {
     "mode": {
       "type": "string",
@@ -52,6 +52,31 @@
           "testsUpdated": {
             "type": "integer",
             "minimum": 0
+          }
+        }
+      }
+    },
+    "skillsUsed": {
+      "type": "array",
+      "description": "Every skill whose instructions or scripts shaped this run, with what it was used for.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["skill", "usedFor"],
+        "properties": {
+          "skill": {
+            "type": "string",
+            "enum": [
+              "analyze-pr-changes",
+              "frontend-unit-tests",
+              "backend-unit-tests",
+              "run-and-verify-tests",
+              "test-report"
+            ]
+          },
+          "usedFor": {
+            "type": "string",
+            "description": "One sentence: what the skill was used for in this run."
           }
         }
       }

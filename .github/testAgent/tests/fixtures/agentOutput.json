@@ -17,7 +17,9 @@
         "area": "frontend",
         "decision": "created",
         "reason": "No test file existed; covered 204, 422, string detail and network failure.",
-        "testFiles": ["frontend/src/lib/http.test.ts"],
+        "testFiles": [
+          "frontend/src/lib/http.test.ts"
+        ],
         "testsAdded": 4,
         "testsUpdated": 0
       },
@@ -26,7 +28,9 @@
         "area": "backend",
         "decision": "updated",
         "reason": "Added 404 cases for get, update and delete.",
-        "testFiles": ["backend/tests/features/todos/test_router.py"],
+        "testFiles": [
+          "backend/tests/features/todos/test_router.py"
+        ],
         "testsAdded": 3,
         "testsUpdated": 0
       },
@@ -38,6 +42,16 @@
         "testFiles": [],
         "testsAdded": 0,
         "testsUpdated": 0
+      }
+    ],
+    "skillsUsed": [
+      {
+        "skill": "frontend-unit-tests",
+        "usedFor": "Mocked lib/http and covered the 422 and network error paths."
+      },
+      {
+        "skill": "run-and-verify-tests",
+        "usedFor": "Ran the full suites with coverage and the shuffled reruns."
       }
     ],
     "findings": [

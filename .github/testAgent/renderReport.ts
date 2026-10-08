@@ -41,6 +41,7 @@ export interface AgentReport {
   summary: string
   testsPassing: boolean
   files: FileDecision[]
+  skillsUsed?: { skill: string; usedFor: string }[]
   findings: Finding[]
   commands: { command: string; exitCode: number; summary: string }[]
 }
@@ -182,6 +183,15 @@ function decisionsSection(report: AgentReport): string[] {
   ]
 }
 
+function skillsSection(report: AgentReport): string[] {
+  const skills = report.skillsUsed ?? []
+  if (skills.length === 0) return ['The agent did not list any skills.']
+  return skills.map(
+    (entry) =>
+      `- ${codeSpan(inlineText(entry.skill, 80))}: ${inlineText(entry.usedFor)}`,
+  )
+}
+
 function findingsSection(report: AgentReport): string[] {
   if (report.findings.length === 0) return ['No suspected product bugs.']
   return report.findings.map((finding) => {
@@ -293,6 +303,7 @@ export function renderReport(context: ReportContext): string {
   if (report) {
     sections.push([inlineText(report.summary, 1500)])
     sections.push(['### Decisions', '', ...decisionsSection(report)])
+    sections.push(['### Skills used', '', ...skillsSection(report)])
     sections.push(['### Findings', '', ...findingsSection(report)])
   }
   if (context.verification || Object.keys(context.checks).length > 0) {

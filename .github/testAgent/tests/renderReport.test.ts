@@ -193,6 +193,10 @@ describe('renderReport', () => {
     )
     assert.match(
       markdown,
+      /### Skills used\n\n- `frontend-unit-tests`: Mocked lib\/http and covered the 422 and network error paths\.\n- `run-and-verify-tests`: /,
+    )
+    assert.match(
+      markdown,
       /\| Full frontend and backend suites with coverage \| pass \|/,
     )
     assert.match(
@@ -239,6 +243,20 @@ describe('renderReport', () => {
     assert.match(
       markdown,
       /<details><summary>Last lines of the Changed paths stay inside the test allowlist log<\/summary>\n\n```\noutsideAllowlist backend\/app\/main\.py\n```/,
+    )
+  })
+
+  it('says so when an older report lists no skills', () => {
+    const { skillsUsed, ...withoutSkills } = agentOutput.structured_output!
+    assert.ok(skillsUsed)
+    const markdown = renderReport(
+      context({
+        agentOutput: { ...agentOutput, structured_output: withoutSkills },
+      }),
+    )
+    assert.match(
+      markdown,
+      /### Skills used\n\nThe agent did not list any skills\./,
     )
   })
 
