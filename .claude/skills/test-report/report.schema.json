@@ -1,0 +1,101 @@
+{
+  "title": "Unit test agent report",
+  "description": "Final structured report of the unit-test-agent. One entry per changed or targeted source file, findings about suspected product bugs, and the commands the agent ran.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "summary", "testsPassing", "files", "findings", "commands"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["pr", "coverage"]
+    },
+    "summary": {
+      "type": "string",
+      "description": "Two to five plain sentences: what changed, what was tested, what was skipped and why, final test status."
+    },
+    "testsPassing": {
+      "type": "boolean",
+      "description": "True only if the last full run of every suite the agent touched passed."
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "area", "decision", "reason", "testFiles", "testsAdded", "testsUpdated"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Repository-relative path of the source file the decision is about."
+          },
+          "area": {
+            "type": "string",
+            "enum": ["frontend", "backend", "other"]
+          },
+          "decision": {
+            "type": "string",
+            "enum": ["created", "updated", "skipped"]
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why this decision. For skipped files name the category: typesOnly, styles, story, barrel, entrypoint, config, docs, deleted, coverageExcluded, triviallyCovered, alreadyCovered, blockedByProductBug, budget."
+          },
+          "testFiles": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Repository-relative test files created or edited for this source file."
+          },
+          "testsAdded": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "testsUpdated": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "line", "severity", "title", "detail", "evidence"],
+        "properties": {
+          "path": { "type": "string" },
+          "line": { "type": ["integer", "null"] },
+          "severity": {
+            "type": "string",
+            "enum": ["bug", "risk", "question"]
+          },
+          "title": { "type": "string" },
+          "detail": {
+            "type": "string",
+            "description": "Expected versus actual behaviour, and why the test was not changed to hide it."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "How to reproduce: the failing assertion, test name or command."
+          }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "exitCode", "summary"],
+        "properties": {
+          "command": { "type": "string" },
+          "exitCode": { "type": "integer" },
+          "summary": {
+            "type": "string",
+            "description": "One line, for example: 14 passed, 0 failed, frontend lines 61.2%."
+          }
+        }
+      }
+    }
+  }
+}
