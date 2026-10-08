@@ -29,8 +29,14 @@
 }
 .filters-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
   gap: var(--space-md);
+}
+.filters-action {
+  align-self: end;
+}
+.filters-error {
+  grid-column: 1 / -1;
 }
 .todo-list {
   list-style: none;
@@ -71,6 +77,15 @@
   width: fit-content;
   max-width: calc(100% - var(--space-xxl));
   margin-inline: auto;
+}
+@media (max-width: 960px) {
+  .filters-layout {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  }
+  .filters-action {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
 }
 @media (max-width: 640px) {
   .page-layout {
