@@ -1,0 +1,70 @@
+{
+  "base": "main",
+  "head": "HEAD",
+  "mergeBase": "1111111111111111111111111111111111111111",
+  "headCommit": "2222222222222222222222222222222222222222",
+  "files": [
+    {
+      "path": "frontend/src/lib/http.ts",
+      "previousPath": null,
+      "status": "modified",
+      "area": "frontendSource",
+      "kind": "module",
+      "testCandidate": true,
+      "changedLines": [[2, 4]],
+      "conventionTest": "frontend/src/lib/http.test.ts",
+      "conventionTestExists": false,
+      "relatedTests": []
+    },
+    {
+      "path": "backend/app/features/todos/router.py",
+      "previousPath": null,
+      "status": "modified",
+      "area": "backendSource",
+      "kind": "module",
+      "testCandidate": true,
+      "changedLines": [[30, 41]],
+      "conventionTest": "backend/tests/features/todos/test_router.py",
+      "conventionTestExists": true,
+      "relatedTests": []
+    },
+    {
+      "path": "frontend/src/features/todos/types.ts",
+      "previousPath": null,
+      "status": "modified",
+      "area": "frontendSource",
+      "kind": "types",
+      "testCandidate": false,
+      "changedLines": [[3, 3]],
+      "conventionTest": "frontend/src/features/todos/types.test.ts",
+      "conventionTestExists": false,
+      "relatedTests": []
+    },
+    {
+      "path": "frontend/src/old.ts",
+      "previousPath": null,
+      "status": "deleted",
+      "area": "frontendSource",
+      "kind": "module",
+      "testCandidate": false,
+      "changedLines": [],
+      "conventionTest": "frontend/src/old.test.ts",
+      "conventionTestExists": false,
+      "relatedTests": []
+    },
+    {
+      "path": "README.md",
+      "previousPath": null,
+      "status": "modified",
+      "area": "docs",
+      "kind": "docs",
+      "testCandidate": false,
+      "changedLines": [[1, 2]],
+      "conventionTest": null,
+      "conventionTestExists": false,
+      "relatedTests": []
+    }
+  ],
+  "counts": { "frontendSource": 3, "backendSource": 1, "test": 0, "config": 0, "docs": 1, "other": 0 },
+  "testCandidates": { "frontend": 1, "backend": 1 }
+}

@@ -1,0 +1,61 @@
+{
+  "type": "result",
+  "subtype": "success",
+  "is_error": false,
+  "duration_ms": 184000,
+  "num_turns": 23,
+  "result": "Done.",
+  "session_id": "6a1d8c1e-0000-4000-8000-000000000000",
+  "total_cost_usd": 0.8312,
+  "structured_output": {
+    "mode": "pr",
+    "summary": "Added tests for the HTTP client error mapping and the router 404 paths. The type change needs no tests. Ping @octocat if this looks wrong | thanks <b>bold</b>.",
+    "testsPassing": true,
+    "files": [
+      {
+        "path": "frontend/src/lib/http.ts",
+        "area": "frontend",
+        "decision": "created",
+        "reason": "No test file existed; covered 204, 422, string detail and network failure.",
+        "testFiles": ["frontend/src/lib/http.test.ts"],
+        "testsAdded": 4,
+        "testsUpdated": 0
+      },
+      {
+        "path": "backend/app/features/todos/router.py",
+        "area": "backend",
+        "decision": "updated",
+        "reason": "Added 404 cases for get, update and delete.",
+        "testFiles": ["backend/tests/features/todos/test_router.py"],
+        "testsAdded": 3,
+        "testsUpdated": 0
+      },
+      {
+        "path": "frontend/src/features/todos/types.ts",
+        "area": "frontend",
+        "decision": "skipped",
+        "reason": "typesOnly: adds a union member.",
+        "testFiles": [],
+        "testsAdded": 0,
+        "testsUpdated": 0
+      }
+    ],
+    "findings": [
+      {
+        "path": "frontend/src/lib/http.ts",
+        "line": 14,
+        "severity": "bug",
+        "title": "422 hides the server detail",
+        "detail": "A 422 with a string detail still shows the generic message.",
+        "evidence": "expect(...).rejects.toThrow('Title taken') failed"
+      }
+    ],
+    "commands": [
+      {
+        "command": "node .claude/skills/run-and-verify-tests/scripts/runTests.ts all --coverage",
+        "exitCode": 0,
+        "summary": "frontend 22 passed, backend 24 passed"
+      }
+    ]
+  }
+}

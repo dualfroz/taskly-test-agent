@@ -1,0 +1,28 @@
+{
+  "/repo/frontend/src/lib/http.ts": {
+    "path": "/repo/frontend/src/lib/http.ts",
+    "statementMap": {
+      "0": { "start": { "line": 1, "column": 0 }, "end": { "line": 1, "column": 40 } },
+      "1": { "start": { "line": 2, "column": 2 }, "end": { "line": 2, "column": 10 } },
+      "2": { "start": { "line": 2, "column": 12 }, "end": { "line": 2, "column": 20 } },
+      "3": { "start": { "line": 4, "column": 2 }, "end": { "line": 4, "column": 30 } },
+      "4": { "start": { "line": 5, "column": 2 }, "end": { "line": 5, "column": 30 } }
+    },
+    "fnMap": {},
+    "branchMap": {},
+    "s": { "0": 1, "1": 0, "2": 3, "3": 0, "4": 0 },
+    "f": {},
+    "b": { "0": [2, 0], "1": [1, 1] }
+  },
+  "/repo/frontend/src/App.tsx": {
+    "path": "/repo/frontend/src/App.tsx",
+    "statementMap": {
+      "0": { "start": { "line": 5, "column": 2 }, "end": { "line": 9, "column": null } }
+    },
+    "fnMap": {},
+    "branchMap": {},
+    "s": { "0": 1 },
+    "f": {},
+    "b": {}
+  }
+}

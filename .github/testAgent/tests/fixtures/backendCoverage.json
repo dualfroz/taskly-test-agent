@@ -1,0 +1,18 @@
+{
+  "meta": { "format": 3, "version": "7.16.2", "branch_coverage": true, "show_contexts": false },
+  "files": {
+    "app/api/dependencies.py": {
+      "executed_lines": [1, 3, 5, 7, 9, 10, 20],
+      "summary": { "covered_lines": 7, "num_statements": 13, "num_branches": 0, "covered_branches": 0, "missing_lines": 6 },
+      "missing_lines": [11, 12, 13, 14, 15, 17],
+      "excluded_lines": []
+    },
+    "app/features/todos/router.py": {
+      "executed_lines": [1, 3, 5],
+      "summary": { "covered_lines": 18, "num_statements": 29, "num_branches": 6, "covered_branches": 6, "missing_lines": 11 },
+      "missing_lines": [24, 25, 26, 27, 32, 33, 34, 35, 40, 41, 42],
+      "excluded_lines": []
+    }
+  },
+  "totals": { "covered_lines": 25, "num_statements": 42 }
+}

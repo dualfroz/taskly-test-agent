@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "../../frontend/node_modules/.bin/tsc -p tsconfig.json",
+    "formatCheck": "../../frontend/node_modules/.bin/prettier --config ../../frontend/.prettierrc.json --check \"**/*.ts\" \"../../.claude/**/*.ts\"",
+    "format": "../../frontend/node_modules/.bin/prettier --config ../../frontend/.prettierrc.json --write \"**/*.ts\" \"../../.claude/**/*.ts\""
+  }
+}
