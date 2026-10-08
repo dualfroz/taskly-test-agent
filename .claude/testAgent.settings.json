@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./frontend/src/**/*.test.ts)",
+      "Edit(./frontend/src/**/*.test.tsx)",
+      "Edit(./frontend/src/test/**/*.ts)",
+      "Edit(./frontend/src/test/**/*.tsx)",
+      "Edit(./frontend/src/design-system/mocks.tsx)",
+      "Edit(./backend/tests/**/*.py)",
+      "Edit(./.testAgent/**)",
+      "Bash(node .claude/skills/analyze-pr-changes/scripts/changeSet.ts files *)",
+      "Bash(node .claude/skills/analyze-pr-changes/scripts/changeSet.ts diff *)",
+      "Bash(node .claude/skills/run-and-verify-tests/scripts/runTests.ts *)",
+      "Bash(node .claude/skills/run-and-verify-tests/scripts/coverageSummary.ts)",
+      "Bash(node .claude/skills/run-and-verify-tests/scripts/coverageSummary.ts *)"
+    ],
+    "deny": [
+      "WebFetch",
+      "WebSearch",
+      "NotebookEdit",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Read(./.git/**)",
+      "Read(//proc/**)",
+      "Read(//sys/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/**)",
+      "Read(~/.claude/**)",
+      "Read(~/.docker/**)",
+      "Read(~/.npmrc)",
+      "Read(~/.git-credentials)",
+      "Edit(./.claude/**)",
+      "Edit(./.github/**)",
+      "Edit(./scripts/**)",
+      "Edit(./backend/app/**)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "Bash(nc *)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Bash(sudo *)",
+      "Bash(rm *)",
+      "Bash(env)",
+      "Bash(printenv)",
+      "Bash(printenv *)",
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(git reset *)",
+      "Bash(git checkout *)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(npm ci *)",
+      "Bash(npx *)",
+      "Bash(pip install *)",
+      "Bash(python -m pip *)",
+      "Bash(python3 -m pip *)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guardTestPaths.ts || exit 2",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
