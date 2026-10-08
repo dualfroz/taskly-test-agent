@@ -77,7 +77,7 @@ Prerequisites:
 
 Then open a pull request from a branch of this repository. The agent runs when the PR is not a draft, comes from this repository, and changes at least one frontend or backend source file that is a test candidate. Results appear as one comment that is updated on every push, in the job summary, and as artifacts (prompt, raw agent output, patch, verification JSON, coverage summaries, logs). Verified tests arrive as a commit `test: add unit tests for changed code` from `github-actions[bot]` with a `Test-Agent: true` trailer.
 
-Pushes made with `GITHUB_TOKEN` do not start new workflow runs. That is one of the two loop guards, but it also means `ci.yml` would not run for the bot's commit. The publish job therefore starts `ci.yml` through `workflow_dispatch` (which `GITHUB_TOKEN` is allowed to trigger) on the PR branch, so the commit gets the regular checks; the verify job has already run the same suites on exactly that tree.
+Pushes made with `GITHUB_TOKEN` do not start workflows on their own. That is one of the two loop guards, but it also means `ci.yml` would not run for the bot's commit, so the publish job starts `ci.yml` through `workflow_dispatch` (which `GITHUB_TOKEN` is allowed to trigger) on the PR branch; the verify job has already run the same suites on exactly that tree. GitHub may additionally create `pull_request` runs for the bot commit that wait for a maintainer's approval (`action_required`). Approving them is safe: CI runs normally and the agent workflow stops in `plan` on the `Test-Agent` trailer.
 
 Locally (needs Node 22.18+, Claude Code, installed dependencies and a clean working tree):
 
@@ -98,7 +98,9 @@ The tooling has its own tests: `npm --prefix .github/testAgent test`, plus `run 
 
 ## Example run
 
-Both runs below were made with `scripts/runTestAgent.sh`, which uses the same CLI flags, settings, verification and report renderer as the workflow; the PR mode output is exactly the markdown the workflow posts as the PR comment. Model `claude-sonnet-5-5` in both.
+On GitHub: [pull request #1](https://github.com/dualfroz/taskly-test-agent/pull/1) adds a feature without tests. The [workflow run](https://github.com/dualfroz/taskly-test-agent/actions/runs/37804838302) planned, ran the agent, verified its patch in a clean job and pushed the tests as `test: add unit tests for changed code` from `github-actions[bot]`; the report is the comment on the PR. On the bot commit, the agent workflow stops in `plan` because of the `Test-Agent` trailer, and the regular CI passes.
+
+The runs below were made locally with `scripts/runTestAgent.sh`, which uses the same CLI flags, settings, verification and report renderer as the workflow; the PR mode output is exactly the markdown the workflow posts as the PR comment. Model `claude-sonnet-5-5` in both.
 
 ### Coverage mode on the original code
 
@@ -224,6 +226,7 @@ The first local runs failed in ways that would also have broken the workflow on 
 - Frontend line coverage comes from V8 statement start lines, backend from coverage.py statements; the numbers are not directly comparable between stacks. The backend figure in the report is statements only, while coverage.py's single headline percentage blends statements and branches (42% before any agent run, 44.13% statements and 30% branches in the report's terms).
 - The bot commit gets CI through `workflow_dispatch`; whether those checks satisfy branch protection depends on how required checks are configured.
 - Python dependencies are pinned but not hash-locked.
+- The actions are pinned to their last v4 and v5 releases, which target Node 20; GitHub runs them on Node 24 and shows a deprecation notice. Moving to the current majors needs one more full run of the agent path to confirm that the artifact upload and download behave the same.
 
 ## For production
 
