@@ -90,6 +90,15 @@ def test_delete_returns_404_for_missing_task(client, repository_mock):
     assert response.json() == {"detail": "Task not found."}
 
 
+def test_delete_completed_returns_number_of_removed_tasks(client, repository_mock):
+    repository_mock.delete_completed.return_value = 2
+    response = client.delete("/api/todos/completed")
+    assert response.status_code == 200
+    assert response.json() == {"deleted": 2}
+    repository_mock.delete_completed.assert_called_once_with()
+    repository_mock.delete.assert_not_called()
+
+
 @pytest.mark.parametrize("method", ["get", "patch", "delete"])
 @pytest.mark.parametrize("todo_id", ["0", "-1", "abc"])
 def test_invalid_path_id_never_calls_repository(client, repository_mock, method, todo_id):

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Alert, Button } from '../../design-system'
 import { SuccessNotice } from '../../components/SuccessNotice'
 import { useNotice } from '../../hooks/useNotice'
+import { ClearCompletedButton } from './components/ClearCompletedButton'
 import { DeleteTodoDialog } from './components/DeleteTodoDialog'
 import { TodoEditor } from './components/TodoEditor'
 import { TodoFilters } from './components/TodoFilters'
@@ -16,6 +17,7 @@ import type { Todo } from './types'
 export function TodosPage() {
   const todosQuery = useTodosQuery()
   const todos = todosQuery.data ?? []
+  const completedCount = todos.filter((todo) => todo.completed).length
   const filters = useTodoFilters(todos)
   const toggleTodo = useUpdateTodoMutation()
   const busy = useTodosBusy()
@@ -59,7 +61,17 @@ export function TodosPage() {
           onFilterChange={filters.setFilter}
           onSearchChange={filters.setSearch}
           onSortChange={filters.setSort}
-        />
+        >
+          <ClearCompletedButton
+            count={completedCount}
+            busy={todosQuery.isPending || busy}
+            onCleared={(deleted) =>
+              notify(
+                `Removed ${deleted} completed ${deleted === 1 ? 'task' : 'tasks'}.`,
+              )
+            }
+          />
+        </TodoFilters>
         {error && (
           <Alert variant="warning">
             {error.message}

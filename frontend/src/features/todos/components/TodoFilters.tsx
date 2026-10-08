@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Input, Select } from '../../../design-system'
 import type { Filter, Sort } from '../types'
 
@@ -8,6 +9,7 @@ interface TodoFiltersProps {
   onFilterChange: (filter: Filter) => void
   onSearchChange: (search: string) => void
   onSortChange: (sort: Sort) => void
+  children?: ReactNode
 }
 
 export function TodoFilters({
@@ -17,6 +19,7 @@ export function TodoFilters({
   onFilterChange,
   onSearchChange,
   onSortChange,
+  children,
 }: TodoFiltersProps) {
   return (
     <section className="filters-layout" aria-label="Task filters">
@@ -46,6 +49,7 @@ export function TodoFilters({
           { value: 'due', label: 'Due date' },
         ]}
       />
+      {children}
     </section>
   )
 }
